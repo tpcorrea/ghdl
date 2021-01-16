@@ -37,34 +37,47 @@ param(
 	[switch]$All =                $false,
 
 	# Compile all UVVM packages.
-	[switch]$UVVM =               $false,
+	[switch]$UVVM =               				$false,
 		# Compile all UVVM Utility packages.
-		[switch]$UVVM_Utilities =           $false,
+		[switch]$UVVM_UTIL =  		         	$false,
 		# Compile all UVVM VCC Framework packages.
-		[switch]$UVVM_VCC_Framework =       $false,
+		[switch]$UVVM_VVC_FRAMEWORK =       $false,
 	# Compile all UVVM Verification IPs (VIPs).
 	[switch]$UVVM_VIP =           $false,
 	  # Compile VIP: Avalon_MM
-	  [switch]$UVVM_VIP_Avalon_MM =       $false,
-	  # Compile VIP: AXI-Lite
-	  [switch]$UVVM_VIP_AXI_Lite =        $false,
-	  # Compile VIP: AXI-Stream
-	  [switch]$UVVM_VIP_AXI_Stream =      $false,
-	  # Compile VIP: Clock Generator
-	  [switch]$UVVM_VIP_Clock_Generator = $false,
-	  # Compile VIP: GPIO
-	  [switch]$UVVM_VIP_GPIO =            $false,
-	  # Compile VIP: I2C
-	  [switch]$UVVM_VIP_I2C =             $false,
-	  # Compile VIP: Scoreboard
-	  [switch]$UVVM_VIP_Scoreboard =      $false,
-	  # Compile VIP: SBI (Simple Byte Interface)
-	  [switch]$UVVM_VIP_SBI =             $false,
-	  # Compile VIP: SPI
-	  [switch]$UVVM_VIP_SPI =             $false,
-	  # Compile VIP: UART
-	  [switch]$UVVM_VIP_UART =            $false,
-
+		[switch]$UVVM_VIP_AVALON_MM =       $false,
+		# Compile VIP: Avalon_ST
+		[switch]$UVVM_VIP_AVALON_ST =       $false,
+		# Compile VIP: AXILITE
+		[switch]$UVVM_VIP_AXILITE =         $false,
+		# Compile VIP: AXISTREAM
+		[switch]$UVVM_VIP_AXISTREAM =       $false,
+		# Compile VIP: CLOCK_GENERATOR
+		[switch]$UVVM_VIP_CLOCK_GENERATOR = $false,
+		# Compile VIP: ERROR_INJECTION
+		[switch]$UVVM_VIP_ERROR_INJECTION = $false,
+		# Compile VIP: GMII
+		[switch]$UVVM_VIP_GMII = 						$false,
+		# Compile VIP: GPIO
+		[switch]$UVVM_VIP_GPIO =            $false,
+		# Compile VIP: I2C
+		[switch]$UVVM_VIP_I2C =             $false,
+		# Compile VIP: RGMII
+		[switch]$UVVM_VIP_RGMII =						$false,
+		# Compile VIP: SCOREBOARD
+		[switch]$UVVM_VIP_SCOREBOARD =      $false,
+		# Compile VIP: SBI
+		[switch]$UVVM_VIP_SBI =             $false,
+		# Compile VIP: SPI
+		[switch]$UVVM_VIP_SPI =             $false,
+		# Compile VIP: UART
+		[switch]$UVVM_VIP_UART =            $false,
+		# Compile VIP: HVVC_TO_VVC_BRIDGE
+		[switch]$UVVM_VIP_HVVC_TO_VVC_BRIDGE = $false,
+		# Compile VIP: ETHERNET
+		[switch]$UVVM_VIP_ETHERNET = 				$false,
+		# Compile VIP: AXI
+		[switch]$UVVM_VIP_AXI = 						$false,
 	# Clean up directory before analyzing.
 	[switch]$Clean =              $false,
 
@@ -112,20 +125,27 @@ if ($All)
 	$UVVM_VIP =                 $true
 }
 if ($UVVM)
-{	$UVVM_Utilities =           $true
-	$UVVM_VCC_Framework =       $true
+{	$UVVM_UTIL =       			    $true
+	$UVVM_VVC_FRAMEWORK =       $true
 }
 if ($UVVM_VIP)
-{	$UVVM_VIP_Avalon_MM =       $true
-	$UVVM_VIP_AXI_Lite =        $true
-	$UVVM_VIP_AXI_Stream =      $true
-	$UVVM_VIP_Clock_Generator = $true
+{	$UVVM_VIP_AVALON_MM =       $true
+	$UVVM_VIP_AVALON_ST =       $true
+	$UVVM_VIP_AXILITE =         $true
+	$UVVM_VIP_AXISTREAM =       $true
+	$UVVM_VIP_CLOCK_GENERATOR = $true
+	$UVVM_VIP_ERROR_INJECTION = $true
+	$UVVM_VIP_GMII = 						$true
 	$UVVM_VIP_GPIO =            $true
 	$UVVM_VIP_I2C =             $true
-	$UVVM_VIP_Scoreboard =      $true
+	$UVVM_VIP_RGMII =						$true
+	$UVVM_VIP_SCOREBOARD =      $true
 	$UVVM_VIP_SBI =             $true
 	$UVVM_VIP_SPI =             $true
 	$UVVM_VIP_UART =            $true
+	$UVVM_VIP_HVVC_TO_VVC_BRIDGE = $false
+	$UVVM_VIP_ETHERNET = 				$true
+	$UVVM_VIP_AXI = 						$true
 }
 
 
@@ -181,92 +201,66 @@ if ($Clean)
 	rm *.cf
 }
 
-$UVVM_Util_Files = @(
-	"uvvm_util\src\types_pkg.vhd",
-	"uvvm_util\src\adaptations_pkg.vhd",
-	"uvvm_util\src\string_methods_pkg.vhd",
-	"uvvm_util\src\protected_types_pkg.vhd",
-	"uvvm_util\src\global_signals_and_shared_variables_pkg.vhd",
-	"uvvm_util\src\hierarchy_linked_list_pkg.vhd",
-	"uvvm_util\src\alert_hierarchy_pkg.vhd",
-	"uvvm_util\src\license_pkg.vhd",
-	"uvvm_util\src\methods_pkg.vhd",
-	"uvvm_util\src\bfm_common_pkg.vhd",
-	"uvvm_util\src\uvvm_util_context.vhd"
-)
-$UVVM_VVC_Files = @(
-	"uvvm_vvc_framework\src\ti_vvc_framework_support_pkg.vhd",
-	"uvvm_vvc_framework\src\ti_generic_queue_pkg.vhd",
-	"uvvm_vvc_framework\src\ti_data_queue_pkg.vhd",
-	"uvvm_vvc_framework\src\ti_data_fifo_pkg.vhd",
-	"uvvm_vvc_framework\src\ti_data_stack_pkg.vhd"
-	"uvvm_vvc_framework\src\ti_uvvm_engine.vhd"
-)
+Write-Host "Reading component list..." -ForegroundColor Cyan
+$ModulesOrder = Get-Content "$SourceDirectory\script\component_list.txt"
+foreach ($Line in $ModulesOrder)
+{
+		$EnableVerbose -and (Write-Host "  Found Module: $Line"    -ForegroundColor Gray                                                                ) | Out-Null
+}
 
+Write-Host "Reading Modules compile order files..." -ForegroundColor Cyan
+$Module_Files = @{}
+$ModuleNumber = 0
+foreach ($line in $ModulesOrder)
+{	$ModuleName =      $line
+	if ($line.StartsWith("bitvis_"))
+	{ $ModuleVariable =  "UVVM_" + $ModuleName.Substring(7).ToUpper()
+		Write-Host "$ModuleVariable"
+	}
+	else
+	{$ModuleVariable =  $ModuleName.ToUpper()
+		Write-Host "$ModuleVariable"
+	}
 
-Write-Host "Reading VIP compile order files..." -ForegroundColor Cyan
-$VIP_Files = @{}
-foreach ($VIPDirectory in (Get-ChildItem -Path $SourceDirectory -Directory "*VIP*"))
-{	$VIPName =      $VIPDirectory.Name
-	$VIPVariable =  $VIPName.Substring(7).ToUpper().Replace("AXI", "AXI_")
+	$EnableVerbose -and (Write-Host "  Found Module: $ModuleName"    -ForegroundColor Gray                                                             ) | Out-Null
+	$EnableDebug -and   (Write-Host "    Reading compile order from '$SourceDirectory\$ModuleName\script\compile_order.txt'" -ForegroundColor DarkGray ) | Out-Null
 
-	$EnableVerbose -and (Write-Host "  Found VIP: $VIPName"    -ForegroundColor Gray                                                                ) | Out-Null
-	$EnableDebug -and   (Write-Host "    Reading compile order from '$SourceDirectory\$VIPName\script\compile_order.txt'" -ForegroundColor DarkGray ) | Out-Null
-
-	$VIPFiles = @()
-	$CompileOrder = Get-Content "$SourceDirectory\$VIPName\script\compile_order.txt"
+	$ModuleFiles = @()
+	$CompileOrder = Get-Content "$SourceDirectory\$ModuleName\script\compile_order.txt"
 	foreach ($Line in $CompileOrder)
 	{	if ($Line.StartsWith("# "))
 		{	if ($Line.StartsWith("# library "))
-			{	$VIPName = $Line.Substring(10) }
+			{	$ModuleName = $Line.Substring(10) }
 			else
 			{ Write-Host "Unknown parser instruction in compile order file." -ForegroundColor Yellow }
 		}
 		else
-		{	$Path = Resolve-Path "$SourceDirectory\$VIPName\script\$Line"
-			$VIPFiles += $Path
+		{	$Path = Resolve-Path "$SourceDirectory\$ModuleName\script\$Line"
+			$ModuleFiles += $Path
 		}
 	}
 
 	if ($EnableDebug)
-	{	Write-Host "    VHDL Library name: $VIPName"    -ForegroundColor DarkGray
-		foreach ($File in $VIPFiles)
+	{	Write-Host "    VHDL Library name $ModuleNumber : $ModuleName"    -ForegroundColor DarkGray
+		foreach ($File in $ModuleFiles)
 	  {	Write-Host "      $File" -ForegroundColor DarkGray }
 	}
 
-	$VIP_Files[$VIPName] = @{
-	  "Variable" =  "UVVM_$VIPVariable";
-	  "Library" =    $VIPName;
-	  "Files" =      $VIPFiles
+	$Module_Files[$ModuleNumber] = @{
+	  "Variable" =  "$ModuleVariable";
+	  "Library" =    $ModuleName;
+	  "Files" =      $ModuleFiles
 	}
+	$ModuleNumber = $ModuleNumber + 1
 }
 
-
-# UVVM packages
-# ==============================================================================
-# compile uvvm_util library
-if ((-not $StopCompiling) -and $UVVM_Utilities)
-{	$Library = "uvvm_util"
-	$SourceFiles = $UVVM_Util_Files | % { "$SourceDirectory\$_" }
-
-	$ErrorCount += Start-PackageCompilation $GHDLBinary $GHDLOptions $DestinationDirectory $Library $VHDLVersion $SourceFiles $SuppressWarnings $HaltOnError -Verbose:$EnableVerbose -Debug:$EnableDebug
-	$StopCompiling = $HaltOnError -and ($ErrorCount -ne 0)
-}
-
-# compile uvvm_vvc_framework library
-if ((-not $StopCompiling) -and $UVVM_VCC_Framework)
-{	$Library = "uvvm_vvc_framework"
-	$SourceFiles = $UVVM_VVC_Files | % { "$SourceDirectory\$_" }
-
-	$ErrorCount += Start-PackageCompilation $GHDLBinary $GHDLOptions $DestinationDirectory $Library $VHDLVersion $SourceFiles $SuppressWarnings $HaltOnError -Verbose:$EnableVerbose -Debug:$EnableDebug
-	$StopCompiling = $HaltOnError -and ($ErrorCount -ne 0)
-}
-
-
-foreach ($vip in $VIP_Files.Keys)
-{	if ((-not $StopCompiling) -and (Get-Variable $VIP_Files[$vip]["Variable"] -ValueOnly))
-	{	$Library =      $VIP_Files[$vip]["Library"]
-		$SourceFiles =  $VIP_Files[$vip]["Files"] #| % { "$SourceDirectory\$_" }
+for ($vip= 0; $vip -le $ModuleNumber-1; $vip++) {
+	if ((-not $StopCompiling) -and (Get-Variable $Module_Files[$vip]["Variable"] -ValueOnly))
+	{
+		$temp = $Module_Files[$vip]["Variable"]
+			Write-Host "Variable $temp"
+		$Library =      $Module_Files[$vip]["Library"]
+		$SourceFiles =  $Module_Files[$vip]["Files"] #| % { "$SourceDirectory\$_" }
 
 		$ErrorCount += Start-PackageCompilation $GHDLBinary $GHDLOptions $DestinationDirectory $Library $VHDLVersion $SourceFiles $SuppressWarnings $HaltOnError -Verbose:$EnableVerbose -Debug:$EnableDebug
 		$StopCompiling = $HaltOnError -and ($ErrorCount -ne 0)
